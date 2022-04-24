@@ -7,8 +7,12 @@ from PNGM.get import get_prime_nums
 app = Flask(__name__)
 api = Api(app)
 
-class PNG(Resource):
+class Home(Resource):
   def get(self):
+    return {"status": "success"}
+
+class PNG(Resource):
+  def post(self):
     range_json = request.get_json()
     start = int(range_json['start'])
     end = int(range_json['end'])
@@ -16,7 +20,7 @@ class PNG(Resource):
     return {'status': 'success'}
 
 class PNM(Resource):
-  def get(self):
+  def post(self):
     k_value_json = request.get_json()
     k_value = int(k_value_json["k"])
     list = k_records(k_value)
@@ -26,13 +30,13 @@ class PNM(Resource):
 class GAP(Resource):
   def get(self):
     lst = get_prime_nums()
-    # print(lst)
     return {"status": "success",
             "prime_nums": lst}
 
+api.add_resource(Home, '/')
 api.add_resource(PNG, '/api/gen')
 api.add_resource(PNM, '/api/mon')
 api.add_resource(GAP, '/api/get')
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run(debug=True, host="0.0.0.0")

@@ -1,5 +1,7 @@
 
 from os.path import exists
+import time
+import os
 
 def all_records():
   file1 = './files/time.txt'
@@ -54,3 +56,38 @@ def k_records(k):
   
   return k_record
 
+def monitor_csv():
+  file0 = './files/monitor.csv'
+  file1 = './files/time.txt'
+  file2 = './files/cpu-consumption.txt'
+  file3 = './files/memory-consumption.txt'
+  if exists(file0):
+    os.remove(file0)
+
+  if not exists(file1):
+    f = open(file1, 'a')
+    f.close()
+  if not exists(file2):
+    f = open(file2, 'a')
+    f.close()
+  if not exists(file3):
+    f = open(file3, 'a')
+    f.close()
+
+  with open(file0, 'a') as f0, open(file1, 'r') as f1, open(file2, 'r') as f2, open(file3, 'r') as f3:
+    f0.write('time stamp       ,cpu, memory\n')
+    while True:
+      time.sleep(61)
+      content1 = f1.read()    
+      content1 = content1.split(',')[0]
+
+      content2 = f2.read()
+      content2 = content2.split(',')[0]
+      
+      content3 = f3.read()
+      content3 = content3.split(',')[0]
+
+      if content1 == "":
+        break
+      
+      f0.write(content1 + ', ' + content2 + ', ' + content3 + '\n')
